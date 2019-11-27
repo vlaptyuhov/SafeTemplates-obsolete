@@ -12,7 +12,7 @@ import laptyuhov.safetemplates.model.TemplateToken;
 
 public final class SafeTemplatesGenerator {
 
-  @VisibleForTesting static final String TAB_1X = "  ";
+  @VisibleForTesting static final String TAB_1X = Strings.repeat(" ", 4);
   @VisibleForTesting static final String TAB_2X = Strings.repeat(TAB_1X, 2);
   @VisibleForTesting static final String TAB_4X = Strings.repeat(TAB_1X, 4);
 
@@ -51,16 +51,13 @@ public final class SafeTemplatesGenerator {
       writer.print(TAB_2X);
       writer.println("return new StringBuilder()");
 
+      writer.print(TAB_4X);
+      writer.println(String.format(".append(\"%s\")", methodSpec.getTemplatePath()));
+
       //TODO(vlaptyuhov): create new iterator for getting tokens from methodSpec.getTemplatePath()
-      Iterator<TemplateToken> templateTokens = null;
-      while (templateTokens.hasNext()) {
-        writer.println(TAB_4X);
-        TemplateToken token = templateTokens.next();
-        writer.println(String.format(".append(%s)", token.getStaticTextOrPlaceholderName()));
-      }
 
       writer.print(TAB_4X);
-      writer.println(".build();");
+      writer.println(".toString();");
 
       writer.print(TAB_1X);
       writer.println("}");
